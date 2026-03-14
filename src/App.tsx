@@ -1827,9 +1827,9 @@ function AppContent() {
       {isRealTimeChatOpen && chatRecipient && (
         <Suspense fallback={<PageLoader />}>
           <RealTimeChat
-            recipientId={chatRecipient.id}
-            recipientName={chatRecipient.name}
-            equipmentId={selectedEquipment?.id}
+            currentUserId={user?.id ?? ''}
+            conversations={[]}
+            onSendMessage={() => {}}
             onClose={() => {
               setIsRealTimeChatOpen(false);
               setChatRecipient(null);
@@ -1846,11 +1846,10 @@ function AppContent() {
             <div className="relative z-10 w-full max-w-6xl max-h-[90vh] overflow-hidden">
               <EquipmentMapEnhanced
                 equipment={equipment}
-                onEquipmentSelect={(eq) => {
+                onEquipmentClick={(eq) => {
                   setSelectedEquipment(eq);
                   setIsEquipmentMapEnhancedOpen(false);
                 }}
-                onClose={() => setIsEquipmentMapEnhancedOpen(false)}
               />
             </div>
           </div>
@@ -2244,6 +2243,7 @@ function AppContent() {
         <Suspense fallback={<PageLoader />}>
           <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
             <QRCodeScanner
+              isOpen={isQRCodeScannerOpen}
               onScan={(data) => {
                 console.log('QR Code scanned:', data);
                 // Handle QR code data (could be equipment ID, booking code, etc.)
